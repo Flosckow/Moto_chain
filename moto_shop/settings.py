@@ -39,12 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework.authtoken',
-
     'cart',
     'moto_user',
     'order',
+    'payment',
     'djoser',
     'django_filters',
+    'paypal.standard.ipn',
+    'import_export',
+    'webpack_loader',
+
 ]
 
 MIDDLEWARE = [
@@ -126,13 +130,25 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "order")
 MEDIA_URL = '/order/'
 DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024
 
+WEBPACK_LOADER = {
+    'DEFAULT': {
+        'BUNDLE_DIR_NAME': '',
+        'STATS_FILE': os.path.join(BASE_DIR, 'frontend/webpack-stats.json'),
+    }
+}
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+MEDIA_URL = '/dmedia/'
+MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [os.path.join(BASE_DIR, "static")]
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+VUE_ROOT = os.path.join(os.path.join(BASE_DIR, "frontend"), "static")
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework.authentication.TokenAuthentication',
+        "rest_framework.authentication.TokenAuthentication",
+        "rest_framework_simplejwt.authentication.JWTAuthentication",
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 30,
@@ -142,7 +158,7 @@ REST_FRAMEWORK = {
 }
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=5),
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=10),
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,
@@ -168,9 +184,14 @@ SIMPLE_JWT = {
 
 }
 
+
+
 DJOSER = {
     'ACTIVATION_URL': '/activate/{uid}/{token}',
     'PASSWORD_RESET_CONFIRM_URL': '/password/reset/confirm/{uid}/{token}',
-    'SEND_ACTIVATION_EMAIL': True,
+    'SEND_ACTIVATION_EMAIL': False,
     'SERIALIZERS': {},
 }
+
+# PAYPAL_RECEIVER_EMAIL = 'sb-9xtn42543111@business.example.com'
+# PAYPAL_TEST = True

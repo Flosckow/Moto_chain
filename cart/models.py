@@ -1,6 +1,9 @@
 from datetime import datetime
 
 from django.db import models
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+
 from moto_user.models import MotoUser
 from order.models import Order
 
@@ -28,3 +31,9 @@ class OrderProduct(models.Model):
     is_active = False
     date = models.DateTimeField('Дата', default=datetime.now())
 
+
+@receiver(post_save, sender=MotoUser)
+def create_user_cart(sender, instance, created, **kwargs):
+    """Создание корзины пользователя"""
+    if created:
+        Cart.objects.create(user=instance)

@@ -13,12 +13,15 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    path('auth/', include('djoser.urls.authtoken')),
+    # path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+    path('auth/', include('djoser.urls')),
+    path('auth/', include('djoser.urls.jwt')),
     path('api/user/', include('moto_user.urls')),
     path('api/', include('order.urls')),
     path('api/cart/', include('cart.urls')),
-
+    # path('paypal/', include('paypal.standard.ipn.urls')),
+    # path('api/payment/', include('payment.urls')),
 ]

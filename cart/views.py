@@ -1,24 +1,19 @@
-from django.shortcuts import render
-
 from rest_framework.generics import ListAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
 from django.db.models import Sum
+from rest_framework.permissions import IsAuthenticated
 
-from cart.models import CartItem, Cart
-from cart.serializers import CartItemSerializer
-
-# Статус заказа Warning
-
-# тест вьюхи и добавить урлы
+from cart.models import CartItem, Cart, OrderProduct
+from cart.serializers import CartItemSerializer, OrderProductSerializer
 
 
 class AddProductInCart(CreateAPIView):
+    permission_classes = [IsAuthenticated]
     queryset = Cart.objects.all()
     serializer_class = CartItemSerializer
 
 
-
-# work
 class AllCartItem(ListAPIView):
+    permission_classes = [IsAuthenticated]
     cart_items = ''
 
     def get_queryset(self):
@@ -35,12 +30,64 @@ class AllCartItem(ListAPIView):
 
 
 class EditCartItem(UpdateAPIView):
-    queryset = CartItem.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        self.cart_items = CartItem.objects.filter(cart__user=self.request.user)
+        return self.cart_items
     serializer_class = CartItemSerializer
 
 
 class DeleteCartItem(DestroyAPIView):
-    queryset = CartItem.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        self.cart_items = CartItem.objects.filter(cart__user=self.request.user)
+        return self.cart_items
+
     serializer_class = CartItemSerializer
+
+
+class AddOrder(CreateAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        self.order = OrderProduct.objects.filter(cart__user=self.request.user)
+        return self.order
+    serializer_class = OrderProductSerializer
+
+
+class OrderList(ListAPIView):
+    permission_classes = [IsAuthenticated]
+    """Список заказов пользователя"""
+    # template_name = "shop/order-list.html"
+    order = ''
+
+    def get_queryset(self):
+        self.order = OrderProduct.objects.filter(cart__user=self.request.user)
+        return self.order
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["total"] = self.order.aggregate(Sum('cart__cart_item__sum_price'))
+        return context
+
+    serializer_class = OrderProductSerializer
+
+
+# рефактор удаления заказа
+class DeleteOrderProduct(DestroyAPIView):
+    permission_classes = [IsAuthenticated]
+
+    def get_queryset(self):
+        self.order = OrderProduct.objects.filter(cart__user=self.request.user)
+        return self.order
+
+
+    serializer_class = OrderProductSerializer
+
+
+
+
 
 
