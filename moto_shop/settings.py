@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'django_filters',
     'paypal.standard.ipn',
     'import_export',
+    'corsheaders',
     'webpack_loader',
 
 ]
@@ -54,6 +55,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -126,9 +128,6 @@ USE_TZ = True
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-MEDIA_ROOT = os.path.join(BASE_DIR, "order")
-MEDIA_URL = '/order/'
-DATA_UPLOAD_MAX_MEMORY_SIZE = 20 * 1024 * 1024
 
 WEBPACK_LOADER = {
     'DEFAULT': {
@@ -139,8 +138,9 @@ WEBPACK_LOADER = {
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
-MEDIA_URL = '/dmedia/'
-MEDIA_ROOT = os.path.join(BASE_DIR, "mediafiles")
+MEDIA_ROOT = os.path.join(BASE_DIR, "media")
+MEDIA_URL = '/media/'
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
 VUE_ROOT = os.path.join(os.path.join(BASE_DIR, "frontend"), "static")
@@ -193,5 +193,11 @@ DJOSER = {
     'SERIALIZERS': {},
 }
 
+CORS_ORIGIN_WHITELIST = [
+    "http://localhost:8080",
+    "http://127.0.0.1:8000"
+
+
+]
 # PAYPAL_RECEIVER_EMAIL = 'sb-9xtn42543111@business.example.com'
 # PAYPAL_TEST = True

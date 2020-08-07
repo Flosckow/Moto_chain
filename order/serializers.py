@@ -4,9 +4,10 @@ from .models import Order
 
 
 class OrderSerializer(serializers.ModelSerializer):
+    category = serializers.SlugRelatedField(slug_field='name', read_only=True)
+
     class Meta:
         model = Order
-        category = serializers.SlugRelatedField(slug_field="title", read_only=True)
         fields = ['id', 'title', 'image', 'price', 'description', 'category']
 
 
