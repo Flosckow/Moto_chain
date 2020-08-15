@@ -26,7 +26,7 @@ class FilterOrder(ListAPIView):
     queryset = Order.objects.all()
     serializer_class = OrderSerializer
     filter_backends = [DjangoFilterBackend]
-    filterset_fields = ['category']
+    filterset_fields = ['category', 'price']
 
 
 class SearchOrder(ListAPIView):

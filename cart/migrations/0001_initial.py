@@ -17,7 +17,7 @@ class Migration(migrations.Migration):
 
     operations = [
         migrations.CreateModel(
-            name='Cart',
+            name='Cart.vue',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('user', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
@@ -29,7 +29,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('status', models.CharField(default='В обработке', max_length=25, verbose_name='Статус заказа')),
                 ('date', models.DateTimeField(default=datetime.datetime(2020, 7, 5, 14, 17, 49, 656498), verbose_name='Дата')),
-                ('cart', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cart.Cart')),
+                ('cart', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cart.Cart.vue')),
             ],
         ),
         migrations.CreateModel(
@@ -38,7 +38,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('quantity', models.PositiveIntegerField(default=1, verbose_name='Количество')),
                 ('sum_price', models.PositiveIntegerField(default=0, verbose_name='Общая цена')),
-                ('cart', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cart.Cart')),
+                ('cart', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cart.Cart.vue')),
                 ('product', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='order.Order')),
             ],
         ),

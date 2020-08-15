@@ -16,7 +16,7 @@ class Category(models.Model):
 class Order(models.Model):
     title = models.CharField(max_length=50, db_index=True)
     image = models.ImageField(default=None, upload_to='order/media')
-    price = models.DecimalField(max_digits=19, decimal_places=10)
+    price = models.DecimalField(max_digits=19, decimal_places=1)
     description = models.CharField(max_length=250)
     category = models.ForeignKey(Category, on_delete=models.PROTECT, related_name='orders')
 

@@ -1,15 +1,21 @@
+from django.views.generic.base import View
+from rest_framework import viewsets
 from rest_framework.generics import ListAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
 from django.db.models import Sum
 from rest_framework.permissions import IsAuthenticated
 
 from cart.models import CartItem, Cart, OrderProduct
-from cart.serializers import CartItemSerializer, OrderProductSerializer
+from cart.serializers import CartItemSerializer, OrderProductSerializer, CreateCartItemSerializer, \
+    DeleteCartItemSerializer
 
 
 class AddProductInCart(CreateAPIView):
     permission_classes = [IsAuthenticated]
-    queryset = Cart.objects.all()
-    serializer_class = CartItemSerializer
+
+    serializer_class = CreateCartItemSerializer
+
+    def perform_create(self, serializer):
+        serializer.save(cart=Cart.objects.get(user=self.request.user))
 
 
 class AllCartItem(ListAPIView):
@@ -17,7 +23,8 @@ class AllCartItem(ListAPIView):
     cart_items = ''
 
     def get_queryset(self):
-        self.cart_items = CartItem.objects.filter(cart__user=self.request.user)
+        print(self.request.user.id)
+        self.cart_items = CartItem.objects.filter(cart__user=self.request.user) # ошибка тут, смотреть модели
         return self.cart_items
 
     def get_context_data(self, **kwargs):
@@ -30,7 +37,7 @@ class AllCartItem(ListAPIView):
 
 
 class EditCartItem(UpdateAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         self.cart_items = CartItem.objects.filter(cart__user=self.request.user)
@@ -42,14 +49,16 @@ class DeleteCartItem(DestroyAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
-        self.cart_items = CartItem.objects.filter(cart__user=self.request.user)
+        self.cart_items = CartItem.objects.get(cart= self.request.user)
         return self.cart_items
 
-    serializer_class = CartItemSerializer
+    serializer_class = DeleteCartItemSerializer
+
+
 
 
 class AddOrder(CreateAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         self.order = OrderProduct.objects.filter(cart__user=self.request.user)
@@ -58,7 +67,7 @@ class AddOrder(CreateAPIView):
 
 
 class OrderList(ListAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
     """Список заказов пользователя"""
     # template_name = "shop/order-list.html"
     order = ''
@@ -77,7 +86,7 @@ class OrderList(ListAPIView):
 
 # рефактор удаления заказа
 class DeleteOrderProduct(DestroyAPIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get_queryset(self):
         self.order = OrderProduct.objects.filter(cart__user=self.request.user)

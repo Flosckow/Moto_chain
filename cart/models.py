@@ -9,16 +9,17 @@ from order.models import Order
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(MotoUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(MotoUser, on_delete=models.CASCADE, related_name='user_cart')
     is_active = True
     is_order = False
 
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    product = models.ForeignKey(Order, on_delete=models.CASCADE)  # change field on_delete
+    product = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='products')  # change field on_delete
     quantity = models.PositiveIntegerField('Количество', default=1)
     sum_price = models.PositiveIntegerField('Общая цена', default=0)
+
 
     def save(self, *args, **kwargs):
         self.sum_price = self.quantity * self.product.price

@@ -18,7 +18,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('status', models.CharField(default='В обработке', max_length=25, verbose_name='Статус заказа')),
                 ('date', models.DateTimeField(default=datetime.datetime(2020, 7, 6, 17, 23, 16, 506166), verbose_name='Дата')),
-                ('cart', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cart.Cart')),
+                ('cart', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='cart.Cart.vue')),
             ],
         ),
         migrations.DeleteModel(
