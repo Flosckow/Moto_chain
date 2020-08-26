@@ -1,8 +1,10 @@
+from apiview.view import APIView
 from django.views.generic.base import View
-from rest_framework import viewsets
+from rest_framework import viewsets, status
 from rest_framework.generics import ListAPIView, UpdateAPIView, DestroyAPIView, CreateAPIView
 from django.db.models import Sum
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 
 from cart.models import CartItem, Cart, OrderProduct
 from cart.serializers import CartItemSerializer, OrderProductSerializer, CreateCartItemSerializer, \
@@ -23,8 +25,7 @@ class AllCartItem(ListAPIView):
     cart_items = ''
 
     def get_queryset(self):
-        print(self.request.user.id)
-        self.cart_items = CartItem.objects.filter(cart__user=self.request.user) # ошибка тут, смотреть модели
+        self.cart_items = CartItem.objects.filter(cart__user=self.request.user)
         return self.cart_items
 
     def get_context_data(self, **kwargs):
@@ -45,15 +46,17 @@ class EditCartItem(UpdateAPIView):
     serializer_class = CartItemSerializer
 
 
+
 class DeleteCartItem(DestroyAPIView):
+
     permission_classes = [IsAuthenticated]
 
-    def get_queryset(self):
-        self.cart_items = CartItem.objects.get(cart= self.request.user)
-        return self.cart_items
-
     serializer_class = DeleteCartItemSerializer
-
+    'ошибка тут'
+    def get_queryset(self):
+        self.cart_items = CartItem.objects.filter(cart__user=self.request.user)
+        print(self.cart_items)
+        return self.cart_items
 
 
 

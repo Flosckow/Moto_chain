@@ -16,7 +16,7 @@ class Cart(models.Model):
 
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE)
-    product = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='products')  # change field on_delete
+    product = models.ForeignKey(Order, on_delete=models.CASCADE, related_name='products')
     quantity = models.PositiveIntegerField('Количество', default=1)
     sum_price = models.PositiveIntegerField('Общая цена', default=0)
 

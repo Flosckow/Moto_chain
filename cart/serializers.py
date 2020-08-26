@@ -6,11 +6,10 @@ from .models import CartItem, OrderProduct
 class CreateCartItemSerializer(serializers.ModelSerializer):
     class Meta:
         model = CartItem
-        fields = ['product', 'quantity', 'sum_price', ]
+        fields = ['product', 'quantity', 'sum_price']
 
 
 class DeleteCartItemSerializer(serializers.ModelSerializer):
-    product = serializers.SlugRelatedField(slug_field='title', read_only=True)
 
     class Meta:
         model = CartItem
@@ -18,9 +17,11 @@ class DeleteCartItemSerializer(serializers.ModelSerializer):
 
 
 class CartItemSerializer(serializers.ModelSerializer):
+    product = serializers.SlugRelatedField(slug_field='title', read_only=True)
+
     class Meta:
         model = CartItem
-        fields = ['cart', 'product', 'quantity', 'sum_price']
+        fields = ['id', 'cart', 'product', 'quantity', 'sum_price']
 
 
 class OrderProductSerializer(serializers.ModelSerializer):
