@@ -7,11 +7,14 @@
                                     <div class="product-shoe-info editContent text-center mt-lg-4">
                                         <div class="item-info-product">
                                             <h4 class="">
-                                                <a href="#" class="editContent">{{product.product}}</a>
+                                                <a href="#" class="editContent"><img class='img-cart' :src='product.product.image'></a>
                                             </h4>
+                                            <div class="customText">
+                                                <span class="money editContent"> Название: {{product.product.title}} </span>
+                                            </div>
                                             <div class="product_price">
                                                 <div class="grid-price">
-                                                    <span class="money editContent"> Цена товара: {{product.sum_price}} $</span>
+                                                    <span class="money editContent"> Цена: {{product.sum_price}} $</span>
                                                 </div>
                                             </div>
                                             <div class="product_price">
@@ -141,6 +144,10 @@
         font-weight: bold;
         letter-spacing: -1px;
         line-height: 1; text-align: center;
+    }
+    .img-cart {
+        width:100%
+
     }
 
 </style>

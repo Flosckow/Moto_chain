@@ -12,58 +12,59 @@
                                 <ul>
                                     <li v-for="product in listProduct" :key="product.id" visibility: hidden>{{ product.title }}</li>
                                 </ul>
-                                <button class="btn1 btn"><span class="fa fa-search"
-                                                               aria-hidden="true"></span></button>
                             </form>
                         </div>
+
 
                         <div class="left-side my-4">
                             <h3 class="sear-head editContent">Класс</h3>
                             <ul class="w3layouts-box-list">
                                 <li class="editContent">
-                                    <input type="button" class="checked" v-model.trim="category" @click="sortModel" id=1>
+                                    <input type="checkbox" class="checked" v-model.trim="category" name='class' @click="sortModel" id=1>
                                     <span class="span editContent">sport</span>
                                     <ul>
                                         <li v-for="product in listProduct" :key="product.id" visibility: hidden>{{ product.category }}</li>
                                     </ul>
                                 </li>
                                 <li class="editContent">
-                                    <input type="checkbox" class="checked">
-                                    <span class="span editContent">MVHt</span>
+                                    <input type="checkbox" class="checked" name='class' v-model='category' value="street" id=3 @click='sortModel'>
+                                    <span class="span editContent">Street</span>
                                 </li>
                                 <li class="editContent">
-                                    <input type="checkbox" class="checked">
-                                    <span class="span editContent">Sport</span>
+                                    <input type="checkbox" name='class' class="checked">
+                                    <span class="span editContent">OffRoad</span>
                                 </li>
                                 <li class="editContent">
-                                    <input type="checkbox" class="checked">
-                                    <span class="span editContent">Бездорожье</span>
+                                    <input type="checkbox" class="checked" name='class' value="tourist" id=2 @click='sortModel'>
+                                    <span class="span editContent">Tourist</span>
                                 </li>
                             </ul>
                         </div>
+
+
                         <div class="left-side">
                             <h3 class="sear-head editContent">Цена</h3>
                             <ul class="w3layouts-box-list">
                                 <li class="editContent">
-                                    <input type="checkbox" class="checked">
+                                    <input type="checkbox" name="price" class="checked">
                                     <span class="span editContent">до 150000</span>
 								</li>
                             </ul>
 							<ul class="w3layouts-box-list">
                                 <li class="editContent">
-                                    <input type="checkbox" class="checked">
+                                    <input type="checkbox" name="price" class="checked">
                                     <span class="span editContent">150000-300000</span>
 								</li>
                             </ul>
 							<ul class="w3layouts-box-list">
                                 <li class="editContent">
-                                    <input type="checkbox" class="checked">
+                                    <input type="checkbox" name="price" class="checked">
                                     <span class="span editContent">300000-450000</span>
 								</li>
 							</ul>
 							<ul class="w3layouts-box-list">
                                 <li class="editContent">
-                                    <input type="checkbox" class="checked">
+                                    <input type="checkbox" name="price" class="checked">
                                     <span class="span editContent">450000 выше</span>
 								</li>
 							</ul>
@@ -109,7 +110,6 @@
                                     <h3 class="editContent">Suzuki GSXR</h3>
                                     <a href="moviesingle.html" class="editContent"></a>
                                 </div>
-
                             </div>
                         </div>
                         <!-- //deals -->
@@ -204,7 +204,9 @@
         },
         mounted() {
             this.sortModel();
-        }
+        },
+
+
     }
 </script>
 

@@ -38,7 +38,7 @@
 
 <script>
     import options from '../headers.js'
-
+    import fetchAdd from '../headers.js'
     export default {
         name: "Single",
         props: ['id'],

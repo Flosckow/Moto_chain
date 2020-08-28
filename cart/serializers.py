@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from .models import CartItem, OrderProduct
-
+from order.models import Order
 
 class CreateCartItemSerializer(serializers.ModelSerializer):
     class Meta:
@@ -16,8 +16,14 @@ class DeleteCartItemSerializer(serializers.ModelSerializer):
         fields = ['product', 'quantity', 'sum_price']
 
 
+class ProductImgSer(serializers.ModelSerializer):
+    class Meta:
+        model = Order
+        fields = ('image', 'title')
+
+
 class CartItemSerializer(serializers.ModelSerializer):
-    product = serializers.SlugRelatedField(slug_field='title', read_only=True)
+    product = ProductImgSer()
 
     class Meta:
         model = CartItem
@@ -28,3 +34,4 @@ class OrderProductSerializer(serializers.ModelSerializer):
     class Meta:
         model = OrderProduct
         fields = ['cart', 'status', 'is_active', 'date']
+
