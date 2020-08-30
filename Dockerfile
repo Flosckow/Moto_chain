@@ -3,7 +3,7 @@ FROM python:3.8-slim
 RUN pip install --no-cache-dir matplotlib pandas
 
 WORKDIR /Desktop/django/moto_shop
-
+пше згыр ву
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
