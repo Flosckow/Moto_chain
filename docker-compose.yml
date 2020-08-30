@@ -1,0 +1,38 @@
+version: '3.8'
+
+
+services:
+  django:
+    build:
+    command: gunicorn moto_shop.wsgi:application -- bind 0.0.0.0:8080
+    env-file:
+      - .env.prod
+    depends_on:
+      - db
+    expose:
+      -7391
+    volumes:
+      - ./media:/Desktop/django/moto_shop/media
+    db:
+      image: postgres:12
+      volumes:
+        - postgres_data:/var/lib/postgresql/data/
+      enviroment:
+        - POSTGRES_USER=hack_postgres_user
+        - POSTGRES_PASSWORD=hack_postgres_password
+        - POSTGRES_DB=hack_postgres_db
+    nginx:
+      image: nginx:mainline-alpine
+      ports:
+        -80:80
+        - 443:443
+      volumes:
+        - ./media:/Desktop/django/moto_shop/media
+        - .dist:/Desktop/django/moto_shop/fronts/dist
+        - ./nginx:/etc/nginx/conf.d
+      depends_on:
+        - django
+  volumes:
+    postgres_data:
+    media:
+    dist:
