@@ -1,0 +1,30 @@
+version: '3.7'
+
+
+services:
+  django:
+    build:
+    command: gunicorn moto_shop.wsgi:application -- bind 0.0.0.0:8080
+    env-file:
+      - .env.prod
+    depends_on:
+      - db
+    expose:
+      -7391
+    volumes:
+      - ./media:/home/daniel/django/moto_shop/media
+    nginx:
+      image: nginx:mainline-alpine
+      ports:
+        -80:80
+        - 443:443
+      volumes:
+        - ./media:/home/daniel/django/moto_shop/media
+        - .dist:/home/daniel/django/fronts/dist
+        - ./nginx:/etc/nginx/conf.d
+      depends_on:
+        - django
+  volumes:
+    postgres_data:
+    media:
+    dist:

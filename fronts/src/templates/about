@@ -1,0 +1,23 @@
+<html>
+<head>
+	<title>About Page</title>
+</head>
+<body>
+<center><h1>Information</h1></center>
+Hey, what's up!
+This is site a testing develop on Vue.
+It's my first expirience.
+<br/><br/>
+Низ страницы
+<br/><br/>
+Данный сайт реализован на Django 3.3 + Vue.js
+<hr>
+Thank you and remember - Persistance is key.
+<br/><br/>
+page:
+/about
+/ - main
+/cart - cart
+/single:id - one product
+</body>
+</html>
