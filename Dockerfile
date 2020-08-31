@@ -18,4 +18,4 @@ RUN apt-get update && apt-get install netcat -y
 
 COPY . /home/daniel/django/moto_shop
 
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+ENTRYPOINT ["/home/daniel/django/moto_shop/entrypoint.sh"]
