@@ -21,18 +21,27 @@ services:
         - POSTGRES_USER=hack_postgres_user
         - POSTGRES_PASSWORD=hack_postgres_password
         - POSTGRES_DB=hack_postgres_db
-    nginx:
-      image: nginx:mainline-alpine
-      ports:
-        -80:80
-        - 443:443
-      volumes:
-        - ./media:/Desktop/django/moto_shop/media
-        - .dist:/Desktop/django/moto_shop/fronts/dist
-        - ./nginx:/etc/nginx/conf.d
-      depends_on:
-        - django
+  vue:
+    build:
+      context: ../fronts
+      dockerfile: Dockerfile.prod
+    volumes:
+      - vue_dist:/app/dist
+    depends_on:
+      - web
+  nginx:
+    image: nginx:mainline-alpine
+    ports:
+      -80:80
+      - 443:443
+    volumes:
+      - ./media:/Desktop/django/moto_shop/media
+      - .dist:/Desktop/django/moto_shop/fronts/dist
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - django
+      - vue
   volumes:
-    postgres_data:
-    media:
-    dist:
+     postgres_data:
+     media:
+     vue_dist:
