@@ -3,6 +3,7 @@ FROM python:3.8-slim
 RUN pip install --no-cache-dir matplotlib pandas
 
 WORKDIR /home/daniel/django/moto_shop
+
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
@@ -17,3 +18,4 @@ RUN apt-get update && apt-get install netcat -y
 
 COPY . /home/daniel/django/moto_shop
 
+ENTRYPOINT ["/home/daniel/django/moto_shop/entrypoint.sh"]

@@ -1,4 +1,4 @@
-version: '3.7'
+version: '3.8'
 
 
 services:
@@ -12,19 +12,36 @@ services:
     expose:
       -7391
     volumes:
-      - ./media:/home/daniel/django/moto_shop/media
-    nginx:
-      image: nginx:mainline-alpine
-      ports:
-        -80:80
-        - 443:443
+      - ./media:/Desktop/django/moto_shop/media
+    db:
+      image: postgres:12
       volumes:
-        - ./media:/home/daniel/django/moto_shop/media
-        - .dist:/home/daniel/django/fronts/dist
-        - ./nginx:/etc/nginx/conf.d
-      depends_on:
-        - django
+        - postgres_data:/var/lib/postgresql/data/
+      enviroment:
+        - POSTGRES_USER=hack_postgres_user
+        - POSTGRES_PASSWORD=hack_postgres_password
+        - POSTGRES_DB=hack_postgres_db
+  vue:
+    build:
+      context: ../fronts
+      dockerfile: Dockerfile.prod
+    volumes:
+      - vue_dist:/app/dist
+    depends_on:
+      - web
+  nginx:
+    image: nginx:mainline-alpine
+    ports:
+      -80:80
+      - 443:443
+    volumes:
+      - ./media:/Desktop/django/moto_shop/media
+      - .dist:/Desktop/django/moto_shop/fronts/dist
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - django
+      - vue
   volumes:
-    postgres_data:
-    media:
-    dist:
+     postgres_data:
+     media:
+     vue_dist:
