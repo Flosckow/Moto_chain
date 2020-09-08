@@ -1,0 +1,56 @@
+FROM python:3.8.3 as builder
+
+
+WORKDIR /home/daniel/django
+
+ENV PYTHONDONTWRITEBYTECODE 1
+ENV PYTHONUNBUFFERED 1
+
+
+RUN apt-get update
+
+RUN apt-get upgrade -y \
+    && apt-get install postgresql gcc python3-dev musl-dev -y
+RUN pip install --upgrade pip
+
+COPY ./requirements.txt .
+RUN pip wheel --no-cache-dir --no-deps --wheel-dir /home/daniel/django/wheels -r requirements.txt
+
+
+FROM python:3.8.3
+
+RUN mkdir -p /home/daniel
+
+RUN groupadd app
+RUN useradd -m -g app app -p PASSWORD
+RUN usermod -aG app app
+
+ENV HOME=/home/daniel
+ENV APP_HOME=/home/daniel/django
+RUN mkdir $APP_HOME
+#RUN mkdir $APP_HOME/staticfiles
+
+WORKDIR $APP_HOME
+
+RUN apt-get update \
+    && apt-get install -y netcat
+
+COPY --from=builder /home/daniel/django/wheels /wheels
+COPY --from=builder /home/daniel/django/requirements.txt .
+RUN pip install --no-cache /wheels/*
+
+COPY ./entrypoint.prod.sh $APP_HOME
+
+COPY . $APP_HOME
+
+RUN chown -R app:app $APP_HOME
+
+USER app
+
+ENTRYPOINT ["/home/daniel/django/entrypoint.prod.sh"]
+
+
+
+
+
+
